@@ -1,39 +1,49 @@
 ﻿@page "/pessoas"
-@using BlazorApp.Shared.Models
 @inject HttpClient http
 
 <h3>Lista</h3>
 
-@if (pessoas == null)
-{
-    <span>Carregando...</span>
-}
-else if (pessoas.Count == 0)
-{
-    <span>Sem dados</span>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Idade</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in pessoas)
-            {
+<div>
+    <a href="pessoas/criar" class="btn btn-success">Novo</a>
+</div>
+
+<div>
+    @if (pessoas == null)
+    {
+        <span>Carregando...</span>
+    }
+    else if (pessoas.Count == 0)
+    {
+        <span>Sem dados</span>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@item.Id</td>
-                    <td>@item.Nome</td>
-                    <td>@item.Idade</td>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Idade</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var item in pessoas)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Nome</td>
+                        <td>@item.Idade</td>
+                        <td>
+                            <a class="btn btn-success" href="pessoas/editar/@item.Id">Editar</a>
+                            <button class="btn btn-danger" @onclick="@(() => ExcluirItem(item.Id))">Excluir</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
 
 @code {
     List<Pessoa> pessoas;
@@ -47,5 +57,12 @@ else
     {
         pessoas = await http.GetFromJsonAsync<List<Pessoa>>("api/pessoa");
     }
+
+    async Task ExcluirItem(int id)
+    {
+        await http.DeleteAsync($"api/pessoa/{id}");
+        await LoadPessoas();
+    }
+
 
 }
