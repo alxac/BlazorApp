@@ -7,7 +7,7 @@ namespace BlazorApp.Shared.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "O campo Nome é obrigatório ({1}{2}{3})")]
+        [Required(ErrorMessage = "O campo Nome é obrigatório")]
         public string Nome { get; set; }
 
         public int Idade { get; set; }
