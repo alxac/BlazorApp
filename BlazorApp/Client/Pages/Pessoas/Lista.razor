@@ -1,0 +1,51 @@
+﻿@page "/pessoas"
+@using BlazorApp.Shared.Models
+@inject HttpClient http
+
+<h3>Lista</h3>
+
+@if (pessoas == null)
+{
+    <span>Carregando...</span>
+}
+else if (pessoas.Count == 0)
+{
+    <span>Sem dados</span>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Idade</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in pessoas)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Nome</td>
+                    <td>@item.Idade</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<Pessoa> pessoas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPessoas();
+    }
+
+    async Task LoadPessoas()
+    {
+        pessoas = await http.GetFromJsonAsync<List<Pessoa>>("api/pessoa");
+    }
+
+}
