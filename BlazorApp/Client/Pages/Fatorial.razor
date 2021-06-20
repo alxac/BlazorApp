@@ -1,0 +1,19 @@
+﻿@page "/fatorial"
+@using BlazorApp.Shared
+
+<h1>Fatorial</h1>
+
+<input type="number" @bind="valor" />
+
+<button class="btn btn-primary" @onclick="CalcFatorial">Calcular</button>
+
+<p>Resultado: @resultado</p>
+
+@code {
+    private int valor, resultado = 0;
+
+    private void CalcFatorial()
+    {
+        resultado = FunctionUtil.Fatorial(valor);
+    }
+}
